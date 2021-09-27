@@ -92,10 +92,7 @@ export function getDefaultName(modelName: string): string {
 }
 
 export function getFieldArgName(field: DMMF.SchemaField): string {
-  return getArgName(
-    (field.outputType.type as DMMF.OutputType).name,
-    field.outputType.isList,
-  )
+  return getArgName((field.outputType.type as DMMF.OutputType).name, field.outputType.isList)
 }
 
 export function getArgName(name: string, isList: boolean): string {
@@ -108,10 +105,7 @@ export function getArgName(name: string, isList: boolean): string {
 
 // we need names for all top level args,
 // as GraphQL doesn't have the concept of unnamed args
-export function getModelArgName(
-  modelName: string,
-  action?: DMMF.ModelAction,
-): string {
+export function getModelArgName(modelName: string, action?: DMMF.ModelAction): string {
   if (!action) {
     return `${modelName}Args`
   }
@@ -145,14 +139,8 @@ export function getModelArgName(
   }
 }
 
-export function getDefaultArgName(
-  dmmf: DMMFClass,
-  modelName: string,
-  action: DMMF.ModelAction,
-): string {
-  const mapping = dmmf.mappings.modelOperations.find(
-    (m) => m.model === modelName,
-  )!
+export function getDefaultArgName(dmmf: DMMFClass, modelName: string, action: DMMF.ModelAction): string {
+  const mapping = dmmf.mappings.modelOperations.find((m) => m.model === modelName)!
 
   const fieldName = mapping[action]
   const operation = getOperation(action)
@@ -162,10 +150,7 @@ export function getDefaultArgName(
 }
 
 export function getOperation(action: DMMF.ModelAction): 'query' | 'mutation' {
-  if (
-    action === DMMF.ModelAction.findMany ||
-    action === DMMF.ModelAction.findUnique
-  ) {
+  if (action === DMMF.ModelAction.findMany || action === DMMF.ModelAction.findUnique) {
     return 'query'
   }
   return 'mutation'
@@ -202,11 +187,7 @@ export function getFieldTypeName(field: DMMF.SchemaField): string {
   return field.outputType.type.name
 }
 
-export function getType(
-  name: string,
-  isList: boolean,
-  isOptional?: boolean,
-): string {
+export function getType(name: string, isList: boolean, isOptional?: boolean): string {
   return name + (isList ? '[]' : '') + (isOptional ? ' | null' : '')
 }
 
@@ -239,16 +220,11 @@ export function getSelectReturnType({
   if (actionName === 'count') {
     return `Promise<number>`
   }
-  if (actionName === 'aggregate')
-    return `Promise<${getAggregateGetName(name)}<T>>`
+  if (actionName === 'aggregate') return `Promise<${getAggregateGetName(name)}<T>>`
 
   const isList = actionName === DMMF.ModelAction.findMany
 
-  if (
-    actionName === 'deleteMany' ||
-    actionName === 'updateMany' ||
-    actionName === 'createMany'
-  ) {
+  if (actionName === 'deleteMany' || actionName === 'updateMany' || actionName === 'createMany') {
     return `PrismaPromise<BatchPayload>`
   }
 
@@ -267,10 +243,7 @@ export function getSelectReturnType({
   }
   if (actionName === 'findFirst' || actionName === 'findUnique') {
     if (isField) {
-      return `CheckSelect<T, Prisma__${name}Client<${getType(
-        name,
-        isList,
-      )} | null >, Prisma__${name}Client<${getType(
+      return `CheckSelect<T, Prisma__${name}Client<${getType(name, isList)} | null >, Prisma__${name}Client<${getType(
         getPayloadName(name) + '<T>',
         isList,
       )} | null >>`
@@ -281,30 +254,22 @@ export function getSelectReturnType({
     )}>, Prisma__${name}Client<${getType(
       getPayloadName(name) + '<T>',
       isList,
-    )}>> : CheckSelect<T, Prisma__${name}Client<${getType(
-      name,
-      isList,
-    )} | null >, Prisma__${name}Client<${getType(
+    )}>> : CheckSelect<T, Prisma__${name}Client<${getType(name, isList)} | null >, Prisma__${name}Client<${getType(
       getPayloadName(name) + '<T>',
       isList,
     )} | null >>`
   }
-  return `CheckSelect<T, Prisma__${name}Client<${getType(
-    name,
+  return `CheckSelect<T, Prisma__${name}Client<${getType(name, isList)}>, Prisma__${name}Client<${getType(
+    getPayloadName(name) + '<T>',
     isList,
-  )}>, Prisma__${name}Client<${getType(getPayloadName(name) + '<T>', isList)}>>`
+  )}>>`
 }
 
-export function isQueryAction(
-  action: DMMF.ModelAction,
-  operation: 'query' | 'mutation',
-): boolean {
+export function isQueryAction(action: DMMF.ModelAction, operation: 'query' | 'mutation'): boolean {
   if (!(action in DMMF.ModelAction)) {
     return false
   }
-  const result =
-    action === DMMF.ModelAction.findUnique ||
-    action === DMMF.ModelAction.findMany
+  const result = action === DMMF.ModelAction.findUnique || action === DMMF.ModelAction.findMany
   return operation === 'query' ? result : !result
 }
 
@@ -312,25 +277,17 @@ export function capitalize(str: string): string {
   return str[0].toUpperCase() + str.slice(1)
 }
 
-export function indentAllButFirstLine(
-  str: string,
-  indentation: number,
-): string {
+export function indentAllButFirstLine(str: string, indentation: number): string {
   const lines = str.split('\n')
 
   return lines[0] + '\n' + indent(lines.slice(1).join('\n'), indentation)
 }
 
-export function getRelativePathResolveStatement(
-  outputDir: string,
-  cwd?: string,
-): string {
+export function getRelativePathResolveStatement(outputDir: string, cwd?: string): string {
   if (!cwd) {
     return 'undefined'
   }
-  return `path.resolve(__dirname, ${JSON.stringify(
-    path.relative(outputDir, cwd),
-  )})`
+  return `path.resolve(__dirname, ${JSON.stringify(path.relative(outputDir, cwd))})`
 }
 
 function flatten(array): any[] {
@@ -376,16 +333,11 @@ export function buildNFTEngineAnnotations(
   }
 
   const getQueryEngineFilename = (p: Platform) =>
-    clientEngineType === ClientEngineType.Binary
-      ? `query-engine-${p}`
-      : getNodeAPIName(p, 'fs')
+    clientEngineType === ClientEngineType.Binary ? `query-engine-${p}` : getNodeAPIName(p, 'fs')
 
   const buildAnnotation = (p: Platform) => {
     return `path.join(__dirname, '${getQueryEngineFilename(p)}');
-path.join(process.cwd(), './${path.join(
-      cwdDirname,
-      getQueryEngineFilename(p),
-    )}')`
+path.join(process.cwd(), './${path.join(cwdDirname, getQueryEngineFilename(p))}')`
   }
 
   return platforms ? platforms.map(buildAnnotation).join('\n') : ''

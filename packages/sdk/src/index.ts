@@ -31,16 +31,8 @@ export { Generator } from './Generator'
 export { getCommandWithExecutor } from './getCommandWithExecutor'
 export { getGenerator, getGenerators, ProviderAliases } from './getGenerators'
 export { getPackedPackage } from './getPackedPackage'
-export {
-  highlightDatamodel,
-  highlightSql,
-  highlightTS,
-} from './highlight/highlight'
-export {
-  IntrospectionEngine,
-  IntrospectionSchemaVersion,
-  IntrospectionWarnings,
-} from './IntrospectionEngine'
+export { highlightDatamodel, highlightSql, highlightTS } from './highlight/highlight'
+export { IntrospectionEngine, IntrospectionSchemaVersion, IntrospectionWarnings } from './IntrospectionEngine'
 export { isCi } from './isCi'
 export { isCurrentBinInstalledGlobally } from './isCurrentBinInstalledGlobally'
 export { keyBy } from './keyBy'
@@ -64,16 +56,9 @@ export { getEnvPaths } from './utils/getEnvPaths'
 export { mapPreviewFeatures } from './utils/mapPreviewFeatures'
 export { maskSchema } from './utils/maskSchema'
 export { missingGeneratorMessage } from './utils/missingGeneratorMessage'
-export {
-  parseBinaryTargetsEnvValue,
-  parseEnvValue,
-} from './utils/parseEnvValue'
+export { parseBinaryTargetsEnvValue, parseEnvValue } from './utils/parseEnvValue'
 export { printConfigWarnings } from './utils/printConfigWarnings'
 export { load } from './utils/load'
-export {
-  Position,
-  trimBlocksFromSchema,
-  trimNewLine,
-} from './utils/trimBlocksFromSchema'
+export { Position, trimBlocksFromSchema, trimNewLine } from './utils/trimBlocksFromSchema'
 export { tryLoadEnvs } from './utils/tryLoadEnvs'
 export { Platform, getPlatform, getNodeAPIName } from '@prisma/get-platform'

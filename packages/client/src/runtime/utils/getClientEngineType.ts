@@ -6,9 +6,7 @@ export enum ClientEngineType {
 }
 export const DEFAULT_CLIENT_ENGINE_TYPE = ClientEngineType.Library
 
-export function getClientEngineType(
-  generatorConfig?: GeneratorConfig,
-): ClientEngineType {
+export function getClientEngineType(generatorConfig?: GeneratorConfig): ClientEngineType {
   const engineTypeFromEnvVar = getEngineTypeFromEnvVar()
   if (engineTypeFromEnvVar) return engineTypeFromEnvVar
   if (generatorConfig?.config.engineType === ClientEngineType.Library) {

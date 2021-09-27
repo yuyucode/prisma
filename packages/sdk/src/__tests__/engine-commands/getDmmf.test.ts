@@ -245,10 +245,7 @@ describe('getDMMF', () => {
   })
 
   test('chinook introspected schema', async () => {
-    const file = fs.readFileSync(
-      path.join(fixturesPath, 'chinook.prisma'),
-      'utf-8',
-    )
+    const file = fs.readFileSync(path.join(fixturesPath, 'chinook.prisma'), 'utf-8')
     const dmmf = await getDMMF({
       datamodel: file,
     })
@@ -257,10 +254,7 @@ describe('getDMMF', () => {
   })
 
   test('big schema', async () => {
-    const file = fs.readFileSync(
-      path.join(fixturesPath, 'bigschema.prisma'),
-      'utf-8',
-    )
+    const file = fs.readFileSync(path.join(fixturesPath, 'bigschema.prisma'), 'utf-8')
     const dmmf = await getDMMF({
       datamodel: file,
     })

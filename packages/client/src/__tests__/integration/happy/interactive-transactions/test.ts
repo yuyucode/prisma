@@ -126,9 +126,7 @@ describe('interactive transaction', () => {
       throw new Error('you better rollback now')
     })
 
-    await expect(result).rejects.toThrowErrorMatchingInlineSnapshot(
-      `you better rollback now`,
-    )
+    await expect(result).rejects.toThrowErrorMatchingInlineSnapshot(`you better rollback now`)
 
     const users = await prisma.user.findMany()
 

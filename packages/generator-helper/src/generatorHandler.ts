@@ -1,9 +1,4 @@
-import {
-  GeneratorOptions,
-  GeneratorManifest,
-  JsonRPC,
-  GeneratorConfig,
-} from './types'
+import { GeneratorOptions, GeneratorManifest, JsonRPC, GeneratorConfig } from './types'
 import byline from './byline'
 
 export interface Handler {

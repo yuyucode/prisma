@@ -14,26 +14,18 @@ function normalizeToUnixPaths(str) {
   return replaceAll(str, path.sep, '/')
 }
 
-const platformRegex = new RegExp(
-  '(' + platforms.map((p) => escapeString(p)).join('|') + ')',
-  'g',
-)
+const platformRegex = new RegExp('(' + platforms.map((p) => escapeString(p)).join('|') + ')', 'g')
 
 function removePlatforms(str) {
   return str.replace(platformRegex, 'TEST_PLATFORM')
 }
 
 function normalizeGithubLinks(str) {
-  return str.replace(
-    /https:\/\/github.com\/prisma\/prisma-client-js\/issues\/\S+/,
-    'TEST_GITHUB_LINK',
-  )
+  return str.replace(/https:\/\/github.com\/prisma\/prisma-client-js\/issues\/\S+/, 'TEST_GITHUB_LINK')
 }
 
 function normalizeRustError(str) {
-  return str
-    .replace(/\/rustc\/(.+)\//g, '/rustc/hash/')
-    .replace(/(\[.*)(:\d*:\d*)(\])/g, '[/some/rust/path:0:0$3')
+  return str.replace(/\/rustc\/(.+)\//g, '/rustc/hash/').replace(/(\[.*)(:\d*:\d*)(\])/g, '[/some/rust/path:0:0$3')
 }
 
 function normalizeTmpDir(str) {
@@ -44,21 +36,12 @@ const serializer = {
     return typeof value === 'string' || value instanceof Error
   },
   serialize(value) {
-    const message =
-      typeof value === 'string'
-        ? value
-        : value instanceof Error
-        ? value.message
-        : ''
+    const message = typeof value === 'string' ? value : value instanceof Error ? value.message : ''
     return prepareSchemaForSnapshot(
       normalizeGithubLinks(
         normalizeRustError(
           normalizeTmpDir(
-            normalizeGithubLinks(
-              normalizeToUnixPaths(
-                removePlatforms(trimErrorPaths(stripAnsi(message))),
-              ),
-            ),
+            normalizeGithubLinks(normalizeToUnixPaths(removePlatforms(trimErrorPaths(stripAnsi(message))))),
           ),
         ),
       ),

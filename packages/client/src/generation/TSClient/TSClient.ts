@@ -44,17 +44,13 @@ export class TSClient implements Generatable {
     this.dmmf = new DMMFClass(klona(options.document))
   }
   public toJS(): string {
-    const { generator, sqliteDatasourceOverrides, outputDir, schemaDir } =
-      this.options
+    const { generator, sqliteDatasourceOverrides, outputDir, schemaDir } = this.options
     const schemaPath = path.join(schemaDir, 'prisma.schema')
     const envPaths = getEnvPaths(schemaPath, { cwd: outputDir })
 
     const relativeEnvPaths = {
-      rootEnvPath:
-        envPaths.rootEnvPath && path.relative(outputDir, envPaths.rootEnvPath),
-      schemaEnvPath:
-        envPaths.schemaEnvPath &&
-        path.relative(outputDir, envPaths.schemaEnvPath),
+      rootEnvPath: envPaths.rootEnvPath && path.relative(outputDir, envPaths.rootEnvPath),
+      schemaEnvPath: envPaths.schemaEnvPath && path.relative(outputDir, envPaths.schemaEnvPath),
     }
 
     const config: Omit<GetPrismaClientOptions, 'document' | 'dirname'> = {
@@ -80,11 +76,7 @@ export class TSClient implements Generatable {
     // on serverless envs, relative output dir can be one step lower because of
     // where and how the code is packaged into the lambda like with a build step
     // with platforms like Vercel or Netlify. We want to check this as well.
-    const slsRelativeOutputDir = path
-      .relative(process.cwd(), outputDir)
-      .split(path.sep)
-      .slice(1)
-      .join(path.sep)
+    const slsRelativeOutputDir = path.relative(process.cwd(), outputDir).split(path.sep).slice(1).join(path.sep)
 
     const code = `${commonCodeJS({ ...this.options, browser: false })}
 
@@ -101,14 +93,8 @@ const dirname = findSync(process.cwd(), [
 // https://github.com/microsoft/TypeScript/issues/3192#issuecomment-261720275
 function makeEnum(x) { return x; }
 
-${this.dmmf.schema.enumTypes.prisma
-  .map((type) => new Enum(type, true).toJS())
-  .join('\n\n')}
-${
-  this.dmmf.schema.enumTypes.model
-    ?.map((type) => new Enum(type, false).toJS())
-    .join('\n\n') ?? ''
-}
+${this.dmmf.schema.enumTypes.prisma.map((type) => new Enum(type, true).toJS()).join('\n\n')}
+${this.dmmf.schema.enumTypes.model?.map((type) => new Enum(type, false).toJS()).join('\n\n') ?? ''}
 
 ${new Enum(
   {
@@ -157,11 +143,7 @@ Object.assign(exports, Prisma)
  * In order to make \`ncc\` and \`@vercel/nft\` happy.
  * The process.cwd() annotation is only needed for https://github.com/vercel/vercel/tree/master/packages/now-next
 **/
-${buildNFTEngineAnnotations(
-  clientEngineType,
-  this.options.platforms as Platform[],
-  relativeOutputDir,
-)}
+${buildNFTEngineAnnotations(clientEngineType, this.options.platforms as Platform[], relativeOutputDir)}
 /**
  * Annotation for \`@vercel/nft\`
  * The process.cwd() annotation is only needed for https://github.com/vercel/vercel/tree/master/packages/now-next
@@ -195,13 +177,9 @@ path.join(process.cwd(), './${path.join(relativeOutputDir, `schema.prisma`)}');
 
     // TODO: Make this code more efficient and directly return 2 arrays
 
-    const prismaEnums = this.dmmf.schema.enumTypes.prisma.map((type) =>
-      new Enum(type, true, collector).toTS(),
-    )
+    const prismaEnums = this.dmmf.schema.enumTypes.prisma.map((type) => new Enum(type, true, collector).toTS())
 
-    const modelEnums = this.dmmf.schema.enumTypes.model?.map((type) =>
-      new Enum(type, false, collector).toTS(),
-    )
+    const modelEnums = this.dmmf.schema.enumTypes.model?.map((type) => new Enum(type, false, collector).toTS())
 
     const countTypes: Count[] = this.dmmf.schema.outputObjectTypes.prisma
       .filter((t) => t.name.endsWith('CountOutputType'))
@@ -284,12 +262,7 @@ ${this.dmmf.inputObjectTypes.prisma
     >
   | OptionalFlat<Omit<${baseName}, 'path'>>`)
       collector?.addSymbol(inputType.name)
-      acc.push(
-        new InputType(
-          { ...inputType, name: `${inputType.name}Base` },
-          collector,
-        ).toTS(),
-      )
+      acc.push(new InputType({ ...inputType, name: `${inputType.name}Base` }, collector).toTS())
     } else {
       acc.push(new InputType(inputType, collector).toTS())
     }
@@ -297,11 +270,7 @@ ${this.dmmf.inputObjectTypes.prisma
   }, [] as string[])
   .join('\n')}
 
-${
-  this.dmmf.inputObjectTypes.model
-    ?.map((inputType) => new InputType(inputType, collector).toTS())
-    .join('\n') ?? ''
-}
+${this.dmmf.inputObjectTypes.model?.map((inputType) => new InputType(inputType, collector).toTS()).join('\n') ?? ''}
 
 /**
  * Batch Payload for updateMany & deleteMany & createMany
@@ -331,14 +300,8 @@ export const dmmf: runtime.DMMF.Document;
 // https://github.com/microsoft/TypeScript/issues/3192#issuecomment-261720275
 function makeEnum(x) { return x; }
 
-${this.dmmf.schema.enumTypes.prisma
-  .map((type) => new Enum(type, true).toJS())
-  .join('\n\n')}
-${
-  this.dmmf.schema.enumTypes.model
-    ?.map((type) => new Enum(type, false).toJS())
-    .join('\n\n') ?? ''
-}
+${this.dmmf.schema.enumTypes.prisma.map((type) => new Enum(type, true).toJS()).join('\n\n')}
+${this.dmmf.schema.enumTypes.model?.map((type) => new Enum(type, false).toJS()).join('\n\n') ?? ''}
 
 ${new Enum(
   {

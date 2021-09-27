@@ -1,14 +1,4 @@
-import {
-  arg,
-  Command,
-  Commands,
-  format,
-  HelpError,
-  isError,
-  logger,
-  link,
-  unknownCommand,
-} from '@prisma/sdk'
+import { arg, Command, Commands, format, HelpError, isError, logger, link, unknownCommand } from '@prisma/sdk'
 import chalk from 'chalk'
 import { ExperimentalFlagWithNewMigrateError } from '../utils/flagErrors'
 
@@ -88,9 +78,7 @@ ${chalk.bold('Examples')}
 
     if (['up', 'save', 'down'].includes(args._[0])) {
       throw new Error(
-        `The current command "${
-          args._[0]
-        }" doesn't exist in the new version of Prisma Migrate.
+        `The current command "${args._[0]}" doesn't exist in the new version of Prisma Migrate.
 Read more about how to upgrade: ${link('https://pris.ly/d/migrate-upgrade')}`,
       )
     }
@@ -113,9 +101,7 @@ You can now remove the ${chalk.red('--preview-feature')} flag.`)
 
   public help(error?: string): string | HelpError {
     if (error) {
-      return new HelpError(
-        `\n${chalk.bold.red(`!`)} ${error}\n${MigrateCommand.help}`,
-      )
+      return new HelpError(`\n${chalk.bold.red(`!`)} ${error}\n${MigrateCommand.help}`)
     }
     return MigrateCommand.help
   }
