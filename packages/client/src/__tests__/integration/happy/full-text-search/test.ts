@@ -214,7 +214,7 @@ Array [
     await expect(result).rejects.toThrowErrorMatchingInlineSnapshot(`
 
 Invalid \`prisma.user.findMany()\` invocation in
-/client/src/__tests__/integration/happy/full-text-search/test.ts:206:32
+/client/src/__tests__/integration/happy/full-text-search/test.ts:0:0
 
   203  * Use an invalid operator
   204  */

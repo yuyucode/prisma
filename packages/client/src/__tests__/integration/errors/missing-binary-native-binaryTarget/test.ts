@@ -44,7 +44,7 @@ test('missing binary, native binaryTarget', async () => {
     }).rejects.toThrowErrorMatchingInlineSnapshot(`
 
             Invalid \`prisma.user.findMany()\` invocation in
-            /client/src/__tests__/integration/errors/missing-binary-native-binaryTarget/test.ts:43:25
+            /client/src/__tests__/integration/errors/missing-binary-native-binaryTarget/test.ts:0:0
 
               40 // When updating snapshots this is sensitive to OS, here Linux
               41 // macOS will update extension to .dylib.node, but we need to kepp .so.node for CI
